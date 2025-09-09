@@ -48,6 +48,9 @@ yesBtn.addEventListener("click", function () {
     if (window.showImageInterval) clearInterval(window.showImageInterval);
     if (window.imgInterval) clearInterval(window.imgInterval);
     if (window.buttonInterval) clearInterval(window.buttonInterval);
+    // Reset No click count for next time
+    noClickCount = 0;
+    yesBtn.style.transform = "scale(1)"; // Reset scale
 });
 
 // No button click handler
@@ -60,27 +63,33 @@ noBtn.addEventListener("click", function () {
         if (noClickCount >= 5) {
             // Show Pac-Man animation
             showPacmanAnimation();
-        } else {
-            alert("Oh no! 😢 But I still love you!");
         }
+        // Removed alert notification
     } else {
-        alert("Oh no! 😢 But I still love you!");
+        // Removed alert notification
     }
 });
 
 // Function to show Pac-Man eating the No button
 function showPacmanAnimation() {
     const noBtnRect = noBtn.getBoundingClientRect();
-    pacman.style.left = (noBtnRect.left - 25) + "px";
-    pacman.style.top = (noBtnRect.top - 25) + "px";
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    // Start Pac-Man from the right edge of the screen, aligned with No button vertically
+    const startX = screenWidth - 60; // 60px from right edge (Pac-Man width + margin)
+    const startY = noBtnRect.top + noBtnRect.height / 2 - 30; // Center vertically with No button
+
+    pacman.style.left = startX + "px";
+    pacman.style.top = startY + "px";
     pacman.style.display = "block";
 
     // Animate Pac-Man towards No button
-    let pacmanX = noBtnRect.left - 25;
-    let pacmanY = noBtnRect.top - 25;
-    const targetX = noBtnRect.left + noBtnRect.width / 2 - 25;
-    const targetY = noBtnRect.top + noBtnRect.height / 2 - 25;
-    const steps = 20;
+    let pacmanX = startX;
+    let pacmanY = startY;
+    const targetX = noBtnRect.left + noBtnRect.width / 2 - 30;
+    const targetY = noBtnRect.top + noBtnRect.height / 2 - 30;
+    const steps = 25; // More steps for smoother animation
     const stepX = (targetX - pacmanX) / steps;
     const stepY = (targetY - pacmanY) / steps;
     let currentStep = 0;
@@ -94,11 +103,13 @@ function showPacmanAnimation() {
 
         if (currentStep >= steps) {
             clearInterval(animationInterval);
-            // Hide No button
-            noBtn.style.display = "none";
-            pacman.style.display = "none";
+            // Hide No button after a brief pause
+            setTimeout(() => {
+                noBtn.style.display = "none";
+                pacman.style.display = "none";
+            }, 300);
         }
-    }, 50);
+    }, 40); // Slightly faster animation
 }
 
 // Make No button run away on desktop (not on mobile)
