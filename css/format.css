@@ -237,6 +237,8 @@
 #pacman {
 	width: 50px;
 	height: 50px;
+	transition: left 0.05s linear, top 0.05s linear;
+	/* Smooth movement */
 }
 
 .pacman-body {
@@ -245,6 +247,8 @@
 	background-color: yellow;
 	border-radius: 50%;
 	position: relative;
+	box-shadow: 0 0 10px yellow;
+	/* Glow effect */
 }
 
 .pacman-mouth {
@@ -256,7 +260,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
-	animation: eat 0.5s infinite;
+	animation: eat 0.3s infinite ease-in-out;
 }
 
 @keyframes eat {
@@ -265,7 +269,7 @@
 	}
 
 	50% {
-		transform: rotate(45deg);
+		transform: rotate(30deg);
 	}
 
 	100% {
