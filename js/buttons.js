@@ -67,6 +67,8 @@ noBtn.addEventListener("click", function () {
         }
         // Removed alert notification
     } else {
+        // On desktop, make No button run away on click
+        runAway();
         // Removed alert notification
     }
 });
@@ -128,6 +130,41 @@ function showPacmanAnimation() {
     }, 50);
 }
 
+// Function to make No button run away
+function runAway(mouseX = null, mouseY = null) {
+    const rect = noBtn.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const btnWidth = rect.width;
+    const btnHeight = rect.height;
+    const yesRect = yesBtn.getBoundingClientRect();
+    const safeMargin = 50; // Minimum distance from Yes button
+    const mouseSafeMargin = 100; // Minimum distance from mouse cursor
+
+    let attempts = 0;
+    let newX, newY;
+    const currentX = parseFloat(noBtn.style.left) || 0;
+    const currentY = parseFloat(noBtn.style.top) || 0;
+    do {
+        // Bias towards vertical movement: smaller horizontal range, full vertical range
+        newX = currentX + (Math.random() - 0.5) * 200; // Increased horizontal variation
+        newY = Math.random() * (containerRect.height - btnHeight); // Full vertical range
+        // Clamp to container
+        newX = Math.max(0, Math.min(newX, containerRect.width - btnWidth));
+        newY = Math.max(0, Math.min(newY, containerRect.height - btnHeight));
+        attempts++;
+    } while (
+        ((Math.abs(newX - (yesRect.left - containerRect.left)) < safeMargin + btnWidth &&
+            Math.abs(newY - (yesRect.top - containerRect.top)) < safeMargin + btnHeight) ||
+            (mouseX !== null && mouseY !== null &&
+                Math.sqrt((newX + btnWidth / 2 - (mouseX - containerRect.left)) ** 2 +
+                    (newY + btnHeight / 2 - (mouseY - containerRect.top)) ** 2) < mouseSafeMargin)) &&
+        attempts < 10
+    );
+
+    noBtn.style.left = newX + "px";
+    noBtn.style.top = newY + "px";
+}
+
 // Make No button run away on desktop (not on mobile)
 container.addEventListener("mousemove", function (event) {
     if (!isMobile) { // Only on desktop
@@ -138,35 +175,7 @@ container.addEventListener("mousemove", function (event) {
         const btnY = rect.top + rect.height / 2;
         const distance = Math.sqrt((mouseX - btnX) ** 2 + (mouseY - btnY) ** 2);
         if (distance < 100) { // If mouse is within 100px
-            const containerRect = container.getBoundingClientRect();
-            const btnWidth = rect.width;
-            const btnHeight = rect.height;
-            const yesRect = yesBtn.getBoundingClientRect();
-            const safeMargin = 50; // Minimum distance from Yes button
-
-            let attempts = 0;
-            let newX, newY;
-            const mouseSafeMargin = 60; // Minimum distance from mouse cursor
-            const currentX = parseFloat(noBtn.style.left) || 0;
-            const currentY = parseFloat(noBtn.style.top) || 0;
-            do {
-                // Bias towards vertical movement: smaller horizontal range, full vertical range
-                newX = currentX + (Math.random() - 0.5) * 150; // Small horizontal variation
-                newY = Math.random() * (containerRect.height - btnHeight); // Full vertical range
-                // Clamp to container
-                newX = Math.max(0, Math.min(newX, containerRect.width - btnWidth));
-                newY = Math.max(0, Math.min(newY, containerRect.height - btnHeight));
-                const mouseDistance = Math.sqrt((newX + btnWidth / 2 - (mouseX - containerRect.left)) ** 2 + (newY + btnHeight / 2 - (mouseY - containerRect.top)) ** 2);
-                attempts++;
-            } while (
-                ((Math.abs(newX - (yesRect.left - containerRect.left)) < safeMargin + btnWidth &&
-                    Math.abs(newY - (yesRect.top - containerRect.top)) < safeMargin + btnHeight) ||
-                    mouseDistance < mouseSafeMargin) &&
-                attempts < 10
-            );
-
-            noBtn.style.left = newX + "px";
-            noBtn.style.top = newY + "px";
+            runAway(mouseX, mouseY);
         }
     }
 });
