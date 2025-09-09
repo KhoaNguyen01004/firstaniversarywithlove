@@ -70,46 +70,61 @@ noBtn.addEventListener("click", function () {
     }
 });
 
-// Function to show Pac-Man eating the No button
+// Function to show Pac-Man stealing the No button
 function showPacmanAnimation() {
     const noBtnRect = noBtn.getBoundingClientRect();
     const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
 
-    // Start Pac-Man from the right edge of the screen, aligned with No button vertically
-    const startX = screenWidth - 60; // 60px from right edge (Pac-Man width + margin)
-    const startY = noBtnRect.top + noBtnRect.height / 2 - 30; // Center vertically with No button
-
+    // Start Pac-Man from the right edge
+    const startX = screenWidth - 200; // 200px is Pac-Man width
+    const startY = noBtnRect.top;
     pacman.style.left = startX + "px";
     pacman.style.top = startY + "px";
     pacman.style.display = "block";
 
-    // Animate Pac-Man towards No button
-    let pacmanX = startX;
-    let pacmanY = startY;
-    const targetX = noBtnRect.left + noBtnRect.width / 2 - 30;
-    const targetY = noBtnRect.top + noBtnRect.height / 2 - 30;
-    const steps = 25; // More steps for smoother animation
-    const stepX = (targetX - pacmanX) / steps;
-    const stepY = (targetY - pacmanY) / steps;
+    // Phase 1: Move to No button
+    const targetX1 = noBtnRect.left;
+    const targetY1 = noBtnRect.top;
+    const steps1 = 30;
+    const stepX1 = (targetX1 - startX) / steps1;
+    const stepY1 = (targetY1 - startY) / steps1;
     let currentStep = 0;
 
-    const animationInterval = setInterval(function () {
+    const animationInterval1 = setInterval(function () {
         currentStep++;
-        pacmanX += stepX;
-        pacmanY += stepY;
+        const pacmanX = startX + stepX1 * currentStep;
+        const pacmanY = startY + stepY1 * currentStep;
         pacman.style.left = pacmanX + "px";
         pacman.style.top = pacmanY + "px";
 
-        if (currentStep >= steps) {
-            clearInterval(animationInterval);
-            // Hide No button after a brief pause
-            setTimeout(() => {
-                noBtn.style.display = "none";
-                pacman.style.display = "none";
-            }, 300);
+        if (currentStep >= steps1) {
+            clearInterval(animationInterval1);
+            // Hide No button (stolen)
+            noBtn.style.display = "none";
+
+            // Phase 2: Move back to right edge
+            const targetX2 = screenWidth - 200;
+            const targetY2 = noBtnRect.top;
+            const steps2 = 30;
+            const stepX2 = (targetX2 - targetX1) / steps2;
+            const stepY2 = (targetY2 - targetY1) / steps2;
+            let currentStep2 = 0;
+
+            const animationInterval2 = setInterval(function () {
+                currentStep2++;
+                const pacmanX = targetX1 + stepX2 * currentStep2;
+                const pacmanY = targetY1 + stepY2 * currentStep2;
+                pacman.style.left = pacmanX + "px";
+                pacman.style.top = pacmanY + "px";
+
+                if (currentStep2 >= steps2) {
+                    clearInterval(animationInterval2);
+                    // Hide Pac-Man
+                    pacman.style.display = "none";
+                }
+            }, 50);
         }
-    }, 40); // Slightly faster animation
+    }, 50);
 }
 
 // Make No button run away on desktop (not on mobile)
