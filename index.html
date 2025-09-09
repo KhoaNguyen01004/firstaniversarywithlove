@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<title>First anniversary of love</title>
+	<link rel="icon" href="pic/love.png">
 	<link rel="stylesheet" type="text/css" href="./css/format.css">
 </head>
 
@@ -17,7 +18,7 @@
 	<div id="imgTxt">
 		<span id="Txt"></span> <br />
 		<span id="tmp"></span>
-		<img id="img" src="" alt="">
+		<img id="img" src="pic/love.png" alt="">
 	</div>
 	<div id="heartTxt">
 		<span id="clickMe">Nhấp Em Đi</span>
@@ -41,6 +42,22 @@
 		<span id="txt2"></span>
 	</div>
 
+	<div id="promptContainer" style="display:none;">
+		<p>Em vẫn muốn làm bạn gái anh chứ?</p>
+		<button id="yesBtn">Yes</button>
+		<button id="noBtn">No</button>
+	</div>
+
+	<div id="successMessage"
+		style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white; font-size: 2em; z-index: 11;">
+		Yay! I love you too! ❤️
+	</div>
+
+	<div id="pacman" style="display:none; position: absolute; z-index: 10;">
+		<div class="pacman-body"></div>
+		<div class="pacman-mouth"></div>
+	</div>
+
 	<script>
 		var ok = 0;
 		var flag = 1;
@@ -48,7 +65,7 @@
 		var myTxt = document.getElementById("Txt");
 		var imageArray = [];
 		var imageIndex = 0;
-		var txtArray = ["Chơi xong nhức 2 ngày 🫠\nps: Hình nền đt 🤣",
+		var txtArray = ["Chơi xong nhức 2 ngày 🫠\nps: Hình nền đt",
 			"Nhờ ẻm mà bữa nó vượt chỉ tiêu🤣",
 			"Ẻm chịu xem phim mình thích:))",
 			"Phim hay vãiii\nps:Dép dễ thương:))",
@@ -78,6 +95,142 @@
 		}
 
 		loadImages();
+
+		// Position buttons initially
+		var yesBtn = document.getElementById("yesBtn");
+		var noBtn = document.getElementById("noBtn");
+		var container = document.getElementById("promptContainer");
+
+		function positionButtons() {
+			var containerRect = container.getBoundingClientRect();
+			var btnWidth = 80; // Approximate button width
+			var btnHeight = 40; // Approximate button height
+			var margin = 20;
+			var promptHeight = 50; // Approximate height of the prompt text
+
+			// Position Yes button below the prompt, left side
+			yesBtn.style.left = margin + "px";
+			yesBtn.style.top = (promptHeight + margin) + "px";
+
+			// Position No button below the prompt, right side
+			noBtn.style.left = (containerRect.width - btnWidth - margin) + "px";
+			noBtn.style.top = (promptHeight + margin) + "px";
+		}
+
+		// Call positionButtons when prompt is shown
+		var observer = new MutationObserver(function (mutations) {
+			mutations.forEach(function (mutation) {
+				if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+					if (container.style.display !== 'none') {
+						setTimeout(positionButtons, 100); // Delay to ensure container is rendered
+					}
+				}
+			});
+		});
+		observer.observe(container, { attributes: true, attributeFilter: ['style'] });
+
+		document.getElementById("yesBtn").addEventListener("click", function () {
+			document.getElementById("promptContainer").style.display = "none";
+			document.getElementById("successMessage").style.display = "block";
+			// Stop any remaining slideshow intervals
+			if (window.showImageInterval) clearInterval(window.showImageInterval);
+			if (window.imgInterval) clearInterval(window.imgInterval);
+			if (window.buttonInterval) clearInterval(window.buttonInterval);
+		});
+
+		var noClickCount = 0;
+		var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+		document.getElementById("noBtn").addEventListener("click", function () {
+			if (isMobile) {
+				noClickCount++;
+				var yesBtn = document.getElementById("yesBtn");
+				var currentScale = parseFloat(yesBtn.style.transform) || 1;
+				yesBtn.style.transform = "scale(" + (currentScale + 0.1) + ")";
+
+				if (noClickCount >= 5) {
+					// Show Pac-Man animation
+					var pacman = document.getElementById("pacman");
+					var noBtn = document.getElementById("noBtn");
+					var noBtnRect = noBtn.getBoundingClientRect();
+					pacman.style.left = (noBtnRect.left - 25) + "px";
+					pacman.style.top = (noBtnRect.top - 25) + "px";
+					pacman.style.display = "block";
+
+					// Animate Pac-Man towards No button
+					var pacmanX = noBtnRect.left - 25;
+					var pacmanY = noBtnRect.top - 25;
+					var targetX = noBtnRect.left + noBtnRect.width / 2 - 25;
+					var targetY = noBtnRect.top + noBtnRect.height / 2 - 25;
+					var steps = 20;
+					var stepX = (targetX - pacmanX) / steps;
+					var stepY = (targetY - pacmanY) / steps;
+					var currentStep = 0;
+
+					var animationInterval = setInterval(function () {
+						currentStep++;
+						pacmanX += stepX;
+						pacmanY += stepY;
+						pacman.style.left = pacmanX + "px";
+						pacman.style.top = pacmanY + "px";
+
+						if (currentStep >= steps) {
+							clearInterval(animationInterval);
+							// Hide No button
+							noBtn.style.display = "none";
+							pacman.style.display = "none";
+						}
+					}, 50);
+				} else {
+					alert("Oh no! 😢 But I still love you!");
+				}
+			} else {
+				alert("Oh no! 😢 But I still love you!");
+			}
+		});
+
+		// Make No button run away
+		document.getElementById("promptContainer").addEventListener("mousemove", function (event) {
+			var noBtn = document.getElementById("noBtn");
+			var yesBtn = document.getElementById("yesBtn");
+			var rect = noBtn.getBoundingClientRect();
+			var mouseX = event.clientX;
+			var mouseY = event.clientY;
+			var btnX = rect.left + rect.width / 2;
+			var btnY = rect.top + rect.height / 2;
+			var distance = Math.sqrt((mouseX - btnX) ** 2 + (mouseY - btnY) ** 2);
+			if (distance < 100) { // If mouse is within 100px
+				var containerRect = container.getBoundingClientRect();
+				var btnWidth = rect.width;
+				var btnHeight = rect.height;
+				var yesRect = yesBtn.getBoundingClientRect();
+				var safeMargin = 50; // Minimum distance from Yes button
+
+				var attempts = 0;
+				var newX, newY;
+				var mouseSafeMargin = 60; // Minimum distance from mouse cursor
+				var currentX = parseFloat(noBtn.style.left) || 0;
+				var currentY = parseFloat(noBtn.style.top) || 0;
+				do {
+					// Bias towards vertical movement: smaller horizontal range, full vertical range
+					newX = currentX + (Math.random() - 0.5) * 150; // Small horizontal variation
+					newY = Math.random() * (containerRect.height - btnHeight); // Full vertical range
+					// Clamp to container
+					newX = Math.max(0, Math.min(newX, containerRect.width - btnWidth));
+					newY = Math.max(0, Math.min(newY, containerRect.height - btnHeight));
+					var mouseDistance = Math.sqrt((newX + btnWidth / 2 - (mouseX - containerRect.left)) ** 2 + (newY + btnHeight / 2 - (mouseY - containerRect.top)) ** 2);
+					attempts++;
+				} while (
+					((Math.abs(newX - (yesRect.left - containerRect.left)) < safeMargin + btnWidth &&
+						Math.abs(newY - (yesRect.top - containerRect.top)) < safeMargin + btnHeight) ||
+						mouseDistance < mouseSafeMargin) &&
+					attempts < 10
+				);
+
+				noBtn.style.left = newX + "px";
+				noBtn.style.top = newY + "px";
+			}
+		});
 	</script>
 
 	<script type="text/javascript" src="./js/stars.js"></script>
