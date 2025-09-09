@@ -3,16 +3,26 @@ var btn = document.getElementById("heartTxt");
 btn.style.opacity = 0;
 var btnVal = 0;
 var audio = document.querySelector('audio');
+var promptShown = false;
 
 function showImage() {
 	//document.getElementById("imgTxt").style.opacity = 0;
+	if (imageIndex >= len) {
+		clearInterval(showImageInterval);
+		document.getElementById("imgTxt").style.display = "none";
+		if (!promptShown) {
+			setTimeout(function () {
+				document.getElementById("promptContainer").style.display = "block";
+				flag = 1; // Show mountain background
+			}, 2700); // Show prompt after the last image display
+			promptShown = true;
+		}
+		return;
+	}
 	myImage.setAttribute("src", imageArray[imageIndex]);
 	myTxt.innerHTML = txtArray[imageIndex];
 	//document.getElementById("imgTxt").style.opacity = 1 - flag;
 	imageIndex++;
-	if (imageIndex >= len) {
-		imageIndex = 0;
-	}
 }
 
 function play() {
