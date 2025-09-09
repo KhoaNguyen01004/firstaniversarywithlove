@@ -58,7 +58,8 @@ noBtn.addEventListener("click", function () {
     if (isMobile) {
         noClickCount++;
         const currentScale = parseFloat(yesBtn.style.transform.replace('scale(', '').replace(')', '')) || 1;
-        yesBtn.style.transform = "scale(" + (currentScale + 0.1) + ")";
+        // Make yes button grow much bigger each time (20% increase)
+        yesBtn.style.transform = "scale(" + (currentScale * 1.2) + ")";
 
         if (noClickCount >= 5) {
             // Show Pac-Man animation
