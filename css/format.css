@@ -276,3 +276,41 @@
 		transform: rotate(0deg);
 	}
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+	#heartTxt {
+		width: 25%;
+		/* Increased from 10% */
+		height: 15%;
+		/* Increased from 8% */
+	}
+
+	#clickMe {
+		font-size: 18px;
+		/* Slightly larger text */
+	}
+
+	#button {
+		min-width: 60px;
+		/* Minimum touch target size */
+		min-height: 60px;
+	}
+}
+
+@media (max-width: 480px) {
+	#heartTxt {
+		width: 30%;
+		/* Even larger on very small screens */
+		height: 18%;
+	}
+
+	#clickMe {
+		font-size: 20px;
+	}
+
+	#button {
+		min-width: 70px;
+		min-height: 70px;
+	}
+}
