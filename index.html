@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<title>First anniversary of love</title>
+	<link rel="stylesheet" type="text/css" href="./css/format.css">
+</head>
+
+<body style="margin:0px">
+	<audio loop>
+		<source src="music/music.mp3" type="audio/mpeg">
+		Your browser does not support the audio.
+	</audio>
+	<canvas></canvas>
+	<div id="imgTxt">
+		<span id="Txt"></span> <br />
+		<span id="tmp"></span>
+		<img id="img" src="" alt="">
+	</div>
+	<div id="heartTxt">
+		<span id="clickMe">Nhấp Em Đi</span>
+		<div id="heart">
+			<button id="button" onclick="play()" aria-label="Click to play"></button>
+		</div>
+	</div>
+	<div id="content">
+		<h2 id="together">We have been together</h2>
+		<div id="timer">
+			<b id="y"></b> Years
+			<b id="d"></b> Days
+			<b id="h"></b> Hours
+			<b id="m"></b> Minutes
+			<b id="s"></b> Seconds
+		</div>
+	</div>
+
+	<div id="typeDiv">
+		<span id="txt1"></span> <br />
+		<span id="txt2"></span>
+	</div>
+
+	<script>
+		var ok = 0;
+		var flag = 1;
+		var myImage = document.getElementById("img");
+		var myTxt = document.getElementById("Txt");
+		var imageArray = [];
+		var imageIndex = 0;
+		var txtArray = ["Chơi xong nhức 2 ngày 🫠\nps: Hình nền đt 🤣",
+			"Nhờ ẻm mà bữa nó vượt chỉ tiêu🤣",
+			"Ẻm chịu xem phim mình thích:))",
+			"Phim hay vãiii\nps:Dép dễ thương:))",
+			"Đi ăn với ẻm xong về bỏ quên luôn cặp:))",
+			"Ẻm tặng mình gấu bông nèeee🥹",
+			"10h30 tối 2 đứa rủ nhau đi ăn chè:)))",
+			"Lần đầu làm chuyện ấy\n ps: Mức 0 nha🙃",
+			"Bữa nay đi ăn với ẻm. Đã ăn 3 dĩa cà ri🤤"];
+		var len = 0;
+		var t = 0;
+
+		function loadImages() {
+			let i = 1;
+			function loadNext() {
+				let img = new Image();
+				img.src = `pic/pic${i}.jpg`;
+				img.onload = () => {
+					imageArray.push(`pic/pic${i}.jpg`);
+					i++;
+					loadNext();
+				};
+				img.onerror = () => {
+					len = imageArray.length;
+				};
+			}
+			loadNext();
+		}
+
+		loadImages();
+	</script>
+
+	<script type="text/javascript" src="./js/stars.js"></script>
+	<script type="text/javascript" src="./js/typeWriter.js"></script>
+	<script type="text/javascript" src="./js/date.js"></script>
+	<script type="text/javascript" src="./js/playImg.js"></script>
+</body>
+
+</html>

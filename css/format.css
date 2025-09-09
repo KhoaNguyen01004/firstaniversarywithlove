@@ -1,0 +1,189 @@
+#typeDiv {
+	position: absolute;
+	top: 45%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 100%;
+	height: 10%;
+	text-align: center;
+	max-width: 600px;
+	padding: 0 10px;
+	box-sizing: border-box;
+}
+
+#txt1 {
+	font-size: 2em;
+	text-align: center;
+	color: white;
+}
+
+#txt2 {
+	font-size: 2em;
+	text-align: center;
+	color: white;
+}
+
+#content {
+	position: absolute;
+	top: 1%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 100%;
+	height: 20%;
+	max-width: 600px;
+	padding: 0 10px;
+	box-sizing: border-box;
+}
+
+#together {
+	font-size: 25px;
+	text-align: center;
+	color: white;
+	word-wrap: break-word;
+}
+
+#timer {
+	text-align: center;
+	color: white;
+	word-wrap: break-word;
+}
+
+#y,
+#d,
+#h,
+#m,
+#s {
+	font-size: 19px;
+	font-weight: bold;
+	color: white;
+	display: inline-block;
+	min-width: 40px;
+}
+
+#heartTxt {
+	position: absolute;
+	display: table;
+	vertical-align: middle;
+	top: 80%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 10%;
+	height: 8%;
+}
+
+#clickMe {
+	display: inline-block;
+	font-size: 16px;
+	width: 100%;
+	text-align: center;
+	color: white;
+}
+
+#heart {
+	width: 100%;
+	height: 100%;
+}
+
+#button {
+	background-image: url("../pic/love.png");
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-color: transparent;
+	border: none;
+	outline: none;
+	background-position: center;
+	transition: 0.1s;
+	width: 100%;
+	height: 100%;
+	animation: beat 1s infinite;
+	position: relative;
+}
+
+#button::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	border: 2px solid rgba(255, 0, 0, 0.5);
+	clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+	transform: translate(-50%, -50%);
+	animation: ripple 1s infinite;
+}
+
+@keyframes beat {
+
+	0%,
+	100% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.1);
+	}
+}
+
+@keyframes ripple {
+	0% {
+		transform: translate(-50%, -50%) scale(1);
+		opacity: 1;
+	}
+
+	100% {
+		transform: translate(-50%, -50%) scale(2);
+		opacity: 0;
+	}
+}
+
+#button:active {
+	width: 92%;
+	height: 92%;
+}
+
+#imgTxt {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	top: 20%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 100%;
+	max-width: 400px;
+	height: auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+#img {
+	display: block;
+	left: 0;
+	right: 0;
+	margin: auto;
+	max-width: 100%;
+	max-height: 60vh;
+	height: auto;
+	object-fit: contain;
+}
+
+#Txt {
+	display: inline-block;
+	font-size: 25px;
+	width: 100%;
+	text-align: center;
+	color: white;
+}
+
+#tmp {
+	display: inline-block;
+	font-size: 17px;
+	width: 100%;
+	text-align: center;
+	color: white;
+}
